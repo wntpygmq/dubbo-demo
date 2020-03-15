@@ -1,0 +1,2 @@
+mac=com.pc.spi.dubbo.service.impl.MacComputer
+com.pc.spi.dubbo.service.impl.ComputerWrapper
