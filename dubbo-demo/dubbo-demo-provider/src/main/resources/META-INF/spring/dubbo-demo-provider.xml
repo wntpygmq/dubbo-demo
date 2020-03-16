@@ -43,7 +43,7 @@
     <dubbo:service interface="com.alibaba.dubbo.demo.DemoService"
                    ref="demoServiceV2" delay="-1" cluster="failover" retries="2" group="v2" version="2.0"/>
 
-    <dubbo:service interface="com.alibaba.dubbo.demo.AsyncService" ref="asyncService" />
+    <dubbo:service interface="com.alibaba.dubbo.demo.AsyncService" ref="asyncService" executes="10" />
 
 
 </beans>

@@ -34,27 +34,37 @@ import java.util.concurrent.Semaphore;
 @Activate(group = Constants.PROVIDER, value = Constants.EXECUTES_KEY)
 public class ExecuteLimitFilter implements Filter {
 
+    /**
+     * 简单的计数器count当前值和阈值(100)比较，高并发情况下，计数器count的值为99，两个线程同时获取了count=99,那么实际执行的线程数就是101了。
+     *
+     * 为了将比较和+1做成原子操作，引入semaphore。
+     */
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         URL url = invoker.getUrl();
         String methodName = invocation.getMethodName();
         Semaphore executesLimit = null;
         boolean acquireResult = false;
+        // 如果该接口/方法设置了executes并且值大于0
         int max = url.getMethodParameter(methodName, Constants.EXECUTES_KEY, 0);
-        if (max > 0) {
+        if (max > 0) { //max>0说明设置了executes值
+            // 取出该接口/方法对应的计数器
             RpcStatus count = RpcStatus.getStatus(url, invocation.getMethodName());
 //            if (count.getActive() >= max) {
             /**
              * http://manzhizhen.iteye.com/blog/2386408
              * use semaphore for concurrency control (to limit thread number)
              */
-            executesLimit = count.getSemaphore(max);
+            executesLimit = count.getSemaphore(max);//信号量
+
+            //可知如果并发处理数量大于设置的值，则直接会抛出异常
             if(executesLimit != null && !(acquireResult = executesLimit.tryAcquire())) {
                 throw new RpcException("Failed to invoke method " + invocation.getMethodName() + " in provider " + url + ", cause: The service using threads greater than <dubbo:service executes=\"" + max + "\" /> limited.");
             }
         }
         long begin = System.currentTimeMillis();
         boolean isSuccess = true;
+        // 计数器+1
         RpcStatus.beginCount(url, methodName);
         try {
             Result result = invoker.invoke(invocation);
@@ -67,6 +77,7 @@ public class ExecuteLimitFilter implements Filter {
                 throw new RpcException("unexpected exception when ExecuteLimitFilter", t);
             }
         } finally {
+            // 在finally中进行计数器-1
             RpcStatus.endCount(url, methodName, System.currentTimeMillis() - begin, isSuccess);
             if(acquireResult) {
                 executesLimit.release();
