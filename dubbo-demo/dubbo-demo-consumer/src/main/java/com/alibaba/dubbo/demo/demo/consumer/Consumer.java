@@ -17,6 +17,7 @@
 package com.alibaba.dubbo.demo.demo.consumer;
 
 import com.alibaba.dubbo.demo.AsyncService;
+import com.alibaba.dubbo.demo.DemoService;
 import com.alibaba.dubbo.rpc.RpcContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.concurrent.Callable;
@@ -56,18 +57,18 @@ public class Consumer {
             }
         }
          */
-//        DemoService demoService = (DemoService) context.getBean("demoService"); // get remote service proxy
+        DemoService demoService = (DemoService) context.getBean("demoService"); // get remote service proxy
 
 
         //异步调用
-        final AsyncService asyncService = (AsyncService) context.getBean("asyncService");
+//        final AsyncService asyncService = (AsyncService) context.getBean("asyncService");
 
         while (true) {
             try {
 
 //                RpcContext.getContext().setAttachment("secret","有内鬼");
-//                String hello = demoService.sayHello("world"); // call remote method
-//                System.out.println(hello); // get result
+                String hello = demoService.sayHello("world"); // call remote method
+                System.out.println(hello); // get result
 
 //                List<String> list = demoService.groupList(); // 分组聚合
 //                System.out.println(list);
@@ -76,14 +77,14 @@ public class Consumer {
 
 
 
-                Future<String> result = RpcContext.getContext().asyncCall(new Callable<String>() {
-                    @Override
-                    public String call() throws Exception {
-                        return asyncService.sayHello("async call request");
-                    }
-                });
+//                Future<String> result = RpcContext.getContext().asyncCall(new Callable<String>() {
+//                    @Override
+//                    public String call() throws Exception {
+//                        return asyncService.sayHello("async call request");
+//                    }
+//                });
 
-                System.out.println("async result"+result.get());
+//                System.out.println("async result"+result.get());
 
 
 

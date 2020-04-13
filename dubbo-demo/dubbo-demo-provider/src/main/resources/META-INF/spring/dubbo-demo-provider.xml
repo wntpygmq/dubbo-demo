@@ -38,10 +38,10 @@
 
     <!-- declare the service interface to be exported -->
     <dubbo:service interface="com.alibaba.dubbo.demo.DemoService"
-                   ref="demoService" delay="-1" cluster="failover" retries="2" group="v1" version="1.0"/>
+                   ref="demoService" delay="-1" cluster="failover" retries="2" group="v1"/>
 
     <dubbo:service interface="com.alibaba.dubbo.demo.DemoService"
-                   ref="demoServiceV2" delay="-1" cluster="failover" retries="2" group="v2" version="2.0"/>
+                   ref="demoServiceV2" delay="-1" cluster="failover" retries="2" group="v2"/>
 
     <dubbo:service interface="com.alibaba.dubbo.demo.AsyncService" ref="asyncService" executes="10" />
 

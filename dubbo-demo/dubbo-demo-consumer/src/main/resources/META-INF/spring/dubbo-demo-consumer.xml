@@ -25,20 +25,20 @@
     don't set it same as provider -->
     <dubbo:application name="demo-consumer"/>
 
-    <dubbo:registry address="zookeeper://47.98.213.18:2181" subscribe="true"/>
+    <!--<dubbo:registry address="zookeeper://47.98.213.18:2181" subscribe="true"/>-->
 
     <!-- generate proxy for the remote service, then demoService can be used in the same way as the
     local regular interface -->
     <!--<dubbo:reference id="demoService" check="false" interface="com.alibaba.dubbo.demo.DemoService"-->
                      <!--retries="-1" cluster="failback" loadbalance="leastactive"/>-->
 
-    <dubbo:reference id="demoService" check="false" interface="com.alibaba.dubbo.demo.DemoService" group="*" version="*" >
+    <dubbo:reference id="demoService" check="false" interface="com.alibaba.dubbo.demo.DemoService" url="dubbo://192.168.6.48:20884" retries="-1" group="v1">
         <!--<dubbo:method name="sayHello" cache="lru"/>--><!--开启缓存-->
         <!--<dubbo:method name="groupList" merger="true"/>&lt;!&ndash;聚合多个接口实现类的结果&ndash;&gt;-->
     </dubbo:reference>
 
 
 
-    <dubbo:reference id="asyncService" interface="com.alibaba.dubbo.demo.AsyncService"/>
+    <!--<dubbo:reference id="asyncService" interface="com.alibaba.dubbo.demo.AsyncService"/>-->
 
 </beans>

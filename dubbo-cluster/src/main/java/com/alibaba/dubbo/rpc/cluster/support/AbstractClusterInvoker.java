@@ -281,7 +281,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         // ClusterInvoker先拿到invoker（可能是遍历可能是负载均衡最后拿到DubboInvoker），调用invoker.invoke()。
         /*
             下面是dubbo提供的几种ClusterInvoker：
-            FailoverClusterInvoker：失效转移，invoker失败会重试
+            FailoverClusterInvoker：失败重试，invoker失败会重试
             FailbackClusterInvoker：自动恢复，调用失败直接返回空结果，然后记录下来，定时任务调用
             FailfastClusterInvoker：快速失败，只会进行一次调用，失败后立即抛出异常,常用于幂等性操作
             FailsafeClusterInvoker：失败安全，只记录日志，不抛出异常

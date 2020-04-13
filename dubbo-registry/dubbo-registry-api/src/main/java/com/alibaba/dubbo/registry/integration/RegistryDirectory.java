@@ -178,7 +178,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
 
     public void subscribe(URL url) {
         setConsumerUrl(url);
-        registry.subscribe(url, this);
+        registry.subscribe(url, this);//FailbackRegistry
     }
 
     @Override

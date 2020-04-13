@@ -24,9 +24,9 @@ class StatItem {
 
     private long lastResetTime;
 
-    private long interval;
+    private long interval;//间隔时间
 
-    private AtomicInteger token;
+    private AtomicInteger token;//限流值
 
     private int rate;
 
@@ -38,17 +38,23 @@ class StatItem {
         this.token = new AtomicInteger(rate);
     }
 
+    /**
+     * 突刺现象，interval=10s，rate=1000，可是在10ms就超过1000，那么后面的9s990ms的时候就浪费了
+     * @return
+     */
     public boolean isAllowable() {
         long now = System.currentTimeMillis();
         if (now > lastResetTime + interval) {
-            token.set(rate);
+            token.set(rate);//时间到了就恢复流量
             lastResetTime = now;
         }
 
         int value = token.get();
         boolean flag = false;
         while (value > 0 && !flag) {
+            //并发减一
             flag = token.compareAndSet(value, value - 1);
+            //获取新的值
             value = token.get();
         }
 

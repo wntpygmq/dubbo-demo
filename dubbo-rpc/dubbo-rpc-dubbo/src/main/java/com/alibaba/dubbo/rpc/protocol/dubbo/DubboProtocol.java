@@ -236,7 +236,7 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     @Override
-    public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
+    public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {//invoker是javassist生成的
         URL url = invoker.getUrl();
 
         // 获取服务标识，理解成服务坐标也行。由服务组名，服务名，服务版本号以及端口组成。比如：
@@ -262,7 +262,7 @@ public class DubboProtocol extends AbstractProtocol {
             }
         }
         // 启动服务器
-        openServer(url);
+        openServer(url);//包括用装饰者模式加载handler，用spi加载线程派发器dispatcher
         //优化序列化
         optimizeSerialization(url);
         return exporter;

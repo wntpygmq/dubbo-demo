@@ -491,7 +491,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
 
                  */
 
-                 //这里的refprotocol只是自适应spi的代理对象，通过url的参数registry调用,注意包装类中加载filter链
+                 //这里的refprotocol只是自适应spi的代理对象，通过url的参数registry调用,注意包装类ProtocolFilterWrapper中加载filter链
                 invoker = refprotocol.refer(interfaceClass, urls.get(0));
             }
             // 多个注册中心或多个服务提供者，或者两者混合

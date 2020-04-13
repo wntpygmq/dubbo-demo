@@ -23,11 +23,11 @@ public class DubboSpiMain {
     public static void main(String[] args) {
         System.out.println("===============指定加载=================");
         //通过名称指定加载的实现类
-//        ExtensionLoader<KeyBoard> keyBoardLoader = ExtensionLoader.getExtensionLoader(KeyBoard.class);
-//        KeyBoard keyBoard = keyBoardLoader.getExtension("code");
-//        keyBoard.code(null);
-//
-//        keyBoardLoader.getExtension("game").code(null);
+        ExtensionLoader<KeyBoard> keyBoardLoader = ExtensionLoader.getExtensionLoader(KeyBoard.class);
+        KeyBoard codeKeyBoard = keyBoardLoader.getExtension("code");//调用构造器初始化名为code的实例
+        codeKeyBoard.code(null);//调用实例方法
+
+        keyBoardLoader.getExtension("game").code(null);
 
         System.out.println("===============IOC&AOP================");
         //实现Ioc和aop
@@ -51,9 +51,9 @@ public class DubboSpiMain {
         param.put("type","game");
         URL url1 = new URL("","",0,param);
         //此时还没有加载具体的实现类，只是生成了一个自适应的代理对象，自适应代理对象的code方法包含url解析和spi加载
-        KeyBoard keyBoardAdaptive = loader.getAdaptiveExtension();
+        KeyBoard keyBoard$Adaptive = loader.getAdaptiveExtension();
         //代理对象的code方法会先根据url拿到extName并使用spi加载具体的配置文件中的实现类，并调用该实现类的code方法
-        keyBoardAdaptive.code(url1);
+        keyBoard$Adaptive.code(url1);
 
 
     }
