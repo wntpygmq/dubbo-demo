@@ -89,6 +89,12 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
     @Override
     public void createEphemeral(String path) {
         try {
+            /*
+             * ls /dubbo/com.alibaba.dubbo.demo.DemoService/providers
+             * dubbo%3A%2F%2F192.168.0.100%3A20884%2Fcom.alibaba.dubbo.demo.DemoService2%3Fanyhost%3Dtrue%26application%3Ddemo-provider%26bean.name%3Dcom.alibaba.dubbo.demo.DemoService2%26cluster%3Dfailover%26delay%3D-1%26dispatcher%3Dexecution%26dubbo%3D2.0.2%26generic%3Dfalse%26group%3Dv2%26interface%3Dcom.alibaba.dubbo.demo.DemoService%26methods%3DsayHello%2CgroupList%26pid%3D3418%26retries%3D2%26side%3Dprovider%26timestamp%3D1587132091343,
+             * dubbo%3A%2F%2F192.168.0.100%3A20884%2Fcom.alibaba.dubbo.demo.DemoService%3Fanyhost%3Dtrue%26application%3Ddemo-provider%26bean.name%3Dcom.alibaba.dubbo.demo.DemoService%26cluster%3Dfailover%26delay%3D-1%26dispatcher%3Dexecution%26dubbo%3D2.0.2%26generic%3Dfalse%26group%3Dv1%26interface%3Dcom.alibaba.dubbo.demo.DemoService%26methods%3DsayHello%2CgroupList%26pid%3D3418%26retries%3D2%26side%3Dprovider%26timestamp%3D1587131919235
+             *
+             */
             client.create().withMode(CreateMode.EPHEMERAL).forPath(path);
         } catch (NodeExistsException e) {
         } catch (Exception e) {

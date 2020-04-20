@@ -153,6 +153,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
                                 child = URL.decode(child);
                                 if (!anyServices.contains(child)) {
                                     anyServices.add(child);
+                                    //订阅
                                     subscribe(url.setPath(child).addParameters(Constants.INTERFACE_KEY, child,
                                             Constants.CHECK_KEY, String.valueOf(false)), listener);
                                 }
@@ -167,6 +168,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
                     for (String service : services) {
                         service = URL.decode(service);
                         anyServices.add(service);
+                        //订阅
                         subscribe(url.setPath(service).addParameters(Constants.INTERFACE_KEY, service,
                                 Constants.CHECK_KEY, String.valueOf(false)), listener);
                     }
