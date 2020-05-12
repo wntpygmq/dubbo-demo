@@ -327,6 +327,10 @@ public class DefaultFuture implements ResponseFuture {
                 + " -> " + channel.getRemoteAddress();
     }
 
+    /**
+     * 扫描超时的future，进行超时处理
+     * 如果服务端没有响应结果调用received()，导致FUTURES堆积，那么消费端主动调用received()，根据时间判断是否超时处理
+     */
     private static class RemotingInvocationTimeoutScan implements Runnable {
 
         @Override

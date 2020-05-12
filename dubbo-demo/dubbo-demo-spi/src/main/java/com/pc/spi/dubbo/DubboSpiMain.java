@@ -14,6 +14,9 @@ import java.util.Map;
  * 支持缓存，各种加载器，类文件都会被缓存
  *
  *
+ * 下面三种测试，必须注释另外两种
+ *
+ *
  *
  * @author dongxie
  * @date 10:19 2020-02-25
@@ -23,13 +26,13 @@ public class DubboSpiMain {
     public static void main(String[] args) {
         System.out.println("===============指定加载=================");
         //通过名称指定加载的实现类
-        ExtensionLoader<KeyBoard> keyBoardLoader = ExtensionLoader.getExtensionLoader(KeyBoard.class);
-        KeyBoard codeKeyBoard = keyBoardLoader.getExtension("code");//调用构造器初始化名为code的实例
-        codeKeyBoard.code(null);//调用实例方法
-
-        keyBoardLoader.getExtension("game").code(null);
-
-        System.out.println("===============IOC&AOP================");
+//        ExtensionLoader<KeyBoard> keyBoardLoader = ExtensionLoader.getExtensionLoader(KeyBoard.class);
+//        KeyBoard codeKeyBoard = keyBoardLoader.getExtension("code");//调用构造器初始化名为code的实例
+//        codeKeyBoard.code(null);//调用实例方法
+//
+//        keyBoardLoader.getExtension("game").code(null);
+//
+//        System.out.println("===============IOC&AOP================");
         //实现Ioc和aop
         //aop在文件中配置wrapper类即可
 //        ExtensionLoader<Computer> computerLoader = ExtensionLoader.getExtensionLoader(Computer.class);

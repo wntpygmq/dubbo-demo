@@ -21,6 +21,8 @@ import com.alibaba.dubbo.demo.DemoService;
 import com.alibaba.dubbo.rpc.RpcContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Consumer {
@@ -57,7 +59,7 @@ public class Consumer {
             }
         }
          */
-        DemoService demoService = (DemoService) context.getBean("demoService"); // get remote service proxy
+        final DemoService demoService = (DemoService) context.getBean("demoService"); // get remote service proxy
 
 
         //异步调用
@@ -67,8 +69,21 @@ public class Consumer {
             try {
 
 //                RpcContext.getContext().setAttachment("secret","有内鬼");
-                String hello = demoService.sayHello("world"); // call remote method
-                System.out.println(hello); // get result
+
+                ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+
+                for(int i=0;i<10;i++) {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            String hello = demoService.sayHello("world"); // call remote method
+                            System.out.println(hello); // get result
+                        }
+                    });
+                }
+
+
 
 //                List<String> list = demoService.groupList(); // 分组聚合
 //                System.out.println(list);

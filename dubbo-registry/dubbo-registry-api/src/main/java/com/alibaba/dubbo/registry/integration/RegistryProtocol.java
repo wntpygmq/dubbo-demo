@@ -373,7 +373,7 @@ public class RegistryProtocol implements Protocol {
             BroadcastClusterInvoker：逐个调用所有服务提供者，如果有一个异常，则最后会抛出异常，通常用于通知所有提供者更新缓存或日志等本地资源信息
 
          */
-        Invoker invoker = cluster.join(directory);
+        Invoker invoker = cluster.join(directory);//MockClusterWrapper
         ProviderConsumerRegTable.registerConsumer(invoker, url, subscribeUrl, directory);
         return invoker;
     }

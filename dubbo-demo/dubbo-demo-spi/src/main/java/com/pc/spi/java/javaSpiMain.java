@@ -20,7 +20,7 @@ public class javaSpiMain {
 
         ServiceLoader<Mouse> services = ServiceLoader.load(Mouse.class);
 
-        for(Mouse mouse : services) {
+        for(Mouse mouse : services) {//ServiceLoader.hasNextService()进行迭代
             mouse.use();
         }
 
