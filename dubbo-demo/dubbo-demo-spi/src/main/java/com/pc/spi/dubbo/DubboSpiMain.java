@@ -26,8 +26,8 @@ public class DubboSpiMain {
     public static void main(String[] args) {
         System.out.println("===============指定加载=================");
         //通过名称指定加载的实现类
-//        ExtensionLoader<KeyBoard> keyBoardLoader = ExtensionLoader.getExtensionLoader(KeyBoard.class);
-//        KeyBoard codeKeyBoard = keyBoardLoader.getExtension("code");//调用构造器初始化名为code的实例
+        ExtensionLoader<KeyBoard> keyBoardLoader = ExtensionLoader.getExtensionLoader(KeyBoard.class);
+        KeyBoard codeKeyBoard = keyBoardLoader.getExtension("code");//调用构造器初始化名为code的实例
 //        codeKeyBoard.code(null);//调用实例方法
 //
 //        keyBoardLoader.getExtension("game").code(null);

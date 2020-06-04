@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class DemoServiceImpl implements DemoService {
@@ -30,23 +31,48 @@ public class DemoServiceImpl implements DemoService {
     @Override
     public String sayHello(String name) {
 
-        String attachement = RpcContext.getContext().getAttachment("secret");
+        String secret1 = RpcContext.getContext().getAttachment("secret1");
+
+        String secret2 = RpcContext.getContext().getAttachment("secret2");
+
+        String secret3 = RpcContext.getContext().getAttachment("secret3");
 
 
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        System.out.println(secret1+secret2+secret3);//secret1+secret2+null
+//        try {
+//            TimeUnit.SECONDS.sleep(1);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
 
         System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] Hello " + name + ", request from consumer: " + RpcContext.getContext().getRemoteAddress());
         return "Hello " + name + ", response from provider: " + RpcContext.getContext().getLocalAddress();
     }
+
+
+
 
     @Override
     public List<String> groupList() {
         return Arrays.asList("aa","bb");
     }
 
+    @Override
+    public String sayGood() {
+
+        String secret1 = RpcContext.getContext().getAttachment("secret1");
+
+        String secret2 = RpcContext.getContext().getAttachment("secret2");//
+
+        String secret3 = RpcContext.getContext().getAttachment("secret3");
+
+
+
+        System.out.println(secret1+secret2+secret3);//null+null+secret3
+
+        return "good from DemoServiceImpl";
+    }
 
 }

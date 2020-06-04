@@ -28,4 +28,7 @@ public interface DemoService {
     List<String> groupList();
 
 
+    String sayGood();
+
+
 }

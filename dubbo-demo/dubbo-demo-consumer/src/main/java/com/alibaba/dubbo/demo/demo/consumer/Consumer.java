@@ -27,6 +27,9 @@ import java.util.concurrent.Future;
 
 public class Consumer {
 
+
+    private static ExecutorService executorService = Executors.newFixedThreadPool(10);
+
     public static void main(String[] args) {
         //Prevent to get IPV6 address,this way only work in debug mode
         //But you can pass use -Djava.net.preferIPv4Stack=true,then it work well whether in debug mode or not
@@ -61,27 +64,29 @@ public class Consumer {
          */
         final DemoService demoService = (DemoService) context.getBean("demoService"); // get remote service proxy
 
-
-        //异步调用
-//        final AsyncService asyncService = (AsyncService) context.getBean("asyncService");
-
+        int num = 0;
         while (true) {
             try {
 
-//                RpcContext.getContext().setAttachment("secret","有内鬼");
+                RpcContext.getContext().setAttachment("secret1","secret1");
+                RpcContext.getContext().setAttachment("secret2","secret2");
 
-                ExecutorService executorService = Executors.newFixedThreadPool(10);
+                String hello = demoService.sayHello("world"+num++); // call remote method
 
 
-                for(int i=0;i<10;i++) {
-                    executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            String hello = demoService.sayHello("world"); // call remote method
-                            System.out.println(hello); // get result
-                        }
-                    });
-                }
+                //测试RpcContext隔离
+//                for(int i=0;i<10;i++) {
+//                    executorService.execute(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            RpcContext.getContext().setAttachment("secret3","secret3");
+//                            String hello = demoService.sayGood(); // call remote method
+//                            System.out.println(hello); // get result
+//                        }
+//                    });
+//                }
+
+
 
 
 
@@ -91,17 +96,19 @@ public class Consumer {
 
 
 
-
+                //异步调用
+//                final AsyncService asyncService = (AsyncService) context.getBean("asyncService");
+//                String nullResult = asyncService.sayHello("world");//返回null
+//                System.out.println(nullResult);
+//
 //                Future<String> result = RpcContext.getContext().asyncCall(new Callable<String>() {
 //                    @Override
 //                    public String call() throws Exception {
 //                        return asyncService.sayHello("async call request");
 //                    }
 //                });
-
-//                System.out.println("async result"+result.get());
-
-
+//
+//                System.out.println("async result "+result.get());
 
 
 

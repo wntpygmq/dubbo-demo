@@ -380,7 +380,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
         //attributes are stored by system context.
         // 存储 attributes 到系统上下文中
         StaticContext.getSystemContext().putAll(attributes);
-        // 创建代理类，该方法还会调用其他方法构建以及合并 Invoker 实例
+        // ✨创建代理类，该方法还会调用其他方法构建以及合并 Invoker 实例
         ref = createProxy(map);
         // 根据服务名，ReferenceConfig，代理类构建 ConsumerModel，
         // 并将 ConsumerModel 存入到 ApplicationModel 中

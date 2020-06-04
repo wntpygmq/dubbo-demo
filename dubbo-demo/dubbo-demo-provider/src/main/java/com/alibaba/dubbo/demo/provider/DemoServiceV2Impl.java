@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class DemoServiceV2Impl implements DemoService {
 
@@ -37,4 +38,8 @@ public class DemoServiceV2Impl implements DemoService {
         return Arrays.asList("11","22");
     }
 
+    @Override
+    public String sayGood() {
+        return "DemoServiceV2Impl";
+    }
 }

@@ -111,6 +111,7 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
                 // 发送请求，并得到一个 ResponseFuture 实例
                 ResponseFuture future = currentClient.request(inv, timeout);
                 // 设置 future 到上下文中，使用适配器将ResponseFuture当成future放入RpcContext供用户使用
+                //最终会在FutureFilter中调用
                 RpcContext.getContext().setFuture(new FutureAdapter<Object>(future));
                 // 暂时返回一个空结果
                 return new RpcResult();

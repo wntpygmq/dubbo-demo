@@ -83,6 +83,7 @@ public class NettyClientHandler extends ChannelDuplexHandler {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         super.write(ctx, msg, promise);
+        //✨getOrAddChannel设置了channel到NettyChannel
         NettyChannel channel = NettyChannel.getOrAddChannel(ctx.channel(), url, handler);
         try {
             // if error happens from write, mock a BAD_REQUEST response so that invoker can return immediately without
@@ -95,7 +96,7 @@ public class NettyClientHandler extends ChannelDuplexHandler {
                 response.setErrorMessage(StringUtils.toString(promise.cause()));
                 handler.received(channel, response);
             } else {
-            handler.sent(channel, msg);
+                handler.sent(channel, msg);
             }
         } finally {
             NettyChannel.removeChannelIfDisconnected(ctx.channel());

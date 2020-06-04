@@ -81,7 +81,7 @@ public class FutureFilter implements Filter {
                     }
                     ///must be rpcResult
                     if (!(rpcResult instanceof Result)) {
-                        logger.error(new IllegalStateException("invalid result type :" + rpcResult.getClass() + ", expected " + Result.class.getName()));
+                        logger.error(new IllegalStateException("invalido result type :" + rpcResult.getClass() + ", expected " + Result.class.getName()));
                         return;
                     }
                     Result result = (Result) rpcResult;

@@ -18,6 +18,8 @@ package com.alibaba.dubbo.test.provider;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.dubbo.demo.DemoService;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Default {@link DemoService} implementation
@@ -35,6 +37,21 @@ public class DefaultDemoService implements DemoService {
     @Override
     public String sayHello(String name) {
         return "DefaultDemoService - sayHell() : " + name;
+    }
+
+    @Override
+    public List<String> groupList() {
+        return null;
+    }
+
+    @Override
+    public String sayGood() {
+        return null;
+    }
+
+    @Override
+    public CompletableFuture<String> asyncMethod() {
+        return null;
     }
 
 }

@@ -75,7 +75,7 @@ public class ContextFilter implements Filter {
             result.addAttachments(RpcContext.getServerContext().getAttachments());
             return result;
         } finally {
-            RpcContext.removeContext();
+            RpcContext.removeContext();//最后会清除
             RpcContext.getServerContext().clearAttachments();
         }
     }

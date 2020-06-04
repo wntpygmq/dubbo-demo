@@ -197,7 +197,7 @@ public class HeaderExchangeClient implements ExchangeClient {
                             return Collections.<Channel>singletonList(HeaderExchangeClient.this);
                         }
                     }, heartbeat, heartbeatTimeout),
-                    heartbeat, heartbeat, TimeUnit.MILLISECONDS);
+                    heartbeat, heartbeat, TimeUnit.MILLISECONDS);//60s一次
         }
     }
 

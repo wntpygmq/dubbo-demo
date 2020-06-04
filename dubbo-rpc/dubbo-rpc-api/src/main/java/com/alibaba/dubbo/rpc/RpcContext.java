@@ -62,8 +62,8 @@ public class RpcContext {
         }
     };
 
-    private final Map<String, String> attachments = new HashMap<String, String>();
-    private final Map<String, Object> values = new HashMap<String, Object>();
+    private final Map<String, String> attachments = new HashMap<String, String>();//远程
+    private final Map<String, Object> values = new HashMap<String, Object>();//本地
     private Future<?> future;
 
     private List<URL> urls;
