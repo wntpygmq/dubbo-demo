@@ -48,6 +48,7 @@ public class HeaderExchangeClient implements ExchangeClient {
 
     private static final Logger logger = LoggerFactory.getLogger(HeaderExchangeClient.class);
 
+    //ScheduledThreadPoolExecutor来定期执行心跳请求
     private static final ScheduledThreadPoolExecutor scheduled = new ScheduledThreadPoolExecutor(2, new NamedThreadFactory("dubbo-remoting-client-heartbeat", true));
     private final Client client;
     private final ExchangeChannel channel;
@@ -66,13 +67,13 @@ public class HeaderExchangeClient implements ExchangeClient {
         // 以下代码均与心跳检测逻辑有关
         String dubbo = client.getUrl().getParameter(Constants.DUBBO_VERSION_KEY);
         this.heartbeat = client.getUrl().getParameter(Constants.HEARTBEAT_KEY, dubbo != null && dubbo.startsWith("1.0.") ? Constants.DEFAULT_HEARTBEAT : 0);
-        this.heartbeatTimeout = client.getUrl().getParameter(Constants.HEARTBEAT_TIMEOUT_KEY, heartbeat * 3);
+        this.heartbeatTimeout = client.getUrl().getParameter(Constants.HEARTBEAT_TIMEOUT_KEY, heartbeat * 3);//三次心跳请求没有回复表示超时，即任务连接已经断开
         if (heartbeatTimeout < heartbeat * 2) {
             throw new IllegalStateException("heartbeatTimeout < heartbeatInterval * 2");
         }
         if (needHeartbeat) {
-            // 开启心跳检测定时器
-            startHeartbeatTimer();
+            // 开启客户端心跳检测定时器，dubbo心跳是双向的，服务端心跳发送对应HeaderExchangeServer
+            startHeartbeatTimer();//接收请求是HeartbeatHandler
         }
     }
 

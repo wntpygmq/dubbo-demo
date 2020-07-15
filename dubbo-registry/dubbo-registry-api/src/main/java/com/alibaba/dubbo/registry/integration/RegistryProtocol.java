@@ -128,7 +128,7 @@ public class RegistryProtocol implements Protocol {
         // 获取 Registry,比如 ZookeeperRegistry，创建zk客户端并开启
         Registry registry = registryFactory.getRegistry(registryUrl);
         // 节点创建
-        //如果是zk,通过ls /dubbo/com.alibaba.dubbo.demo.DemoService/providers查看zookeeper节点
+        //如果是zk,通过ls /dubbo/com.alibaba.dubbo.demo.DemoService/providers 查看zookeeper节点
         /*[dubbo%3A%2F%2F192.168.2.146%3A20880%2F
            com.alibaba.dubbo.demo.DemoService%3Fanyhost%3Dtrue%26application%3Ddemo-provider%26bean.name%3D
            com.alibaba.dubbo.demo.DemoService%26delay%3D-1%26dubbo%3D2.0.2%26generic%3Dfalse%26interface%3D
@@ -176,7 +176,7 @@ public class RegistryProtocol implements Protocol {
         // 获取订阅 URL，比如：
         //provider://192.168.2.146:20880/com.alibaba.dubbo.demo.DemoService?anyhost=true&application=demo-provider&bean.name=com.alibaba.dubbo.demo.DemoService&category=configurators&check=false&delay=-1&dubbo=2.0.2&generic=false&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=3654&side=provider&timestamp=1583140968790
         final URL overrideSubscribeUrl = getSubscribedOverrideUrl(registeredProviderUrl);
-        // 创建监听器
+        // ✨ 创建监听器，该监听器的notify方法，可以保证如果由于网络抖动或者重新导入导致服务提供方断连，zk通知服务提供方重连，重新导出
         final OverrideListener overrideSubscribeListener = new OverrideListener(overrideSubscribeUrl, originInvoker);
         // 向注册中心进行订阅 override 数据 ,比如服务端网络抖动
         overrideListeners.put(overrideSubscribeUrl, overrideSubscribeListener);
@@ -209,6 +209,7 @@ public class RegistryProtocol implements Protocol {
 
     /**
      * Reexport the invoker of the modified url
+     * 修改后的url重新导出invoker
      *
      * @param originInvoker
      * @param newInvokerUrl
@@ -421,7 +422,7 @@ public class RegistryProtocol implements Protocol {
      */
     private class OverrideListener implements NotifyListener {
 
-        private final URL subscribeUrl;
+        private final URL subscribeUrl;//监听自己
         private final Invoker originInvoker;
 
         public OverrideListener(URL subscribeUrl, Invoker originalInvoker) {
@@ -463,6 +464,7 @@ public class RegistryProtocol implements Protocol {
             //Merged with this configuration
             URL newUrl = getConfigedInvokerUrl(configurators, originUrl);
             if (!currentUrl.equals(newUrl)) {
+                //✨
                 RegistryProtocol.this.doChangeLocalExport(originInvoker, newUrl);
                 logger.info("exported provider url changed, origin url: " + originUrl + ", old export url: " + currentUrl + ", new export url: " + newUrl);
             }

@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @see com.alibaba.dubbo.registry.RegistryService#subscribe(URL, NotifyListener)
  */
-public interface NotifyListener {
+public interface NotifyListener {//还有个服务端的OverrideListener，也可以接收通知，不管服务端只监听自己
 
     /**
      * Triggered when a service change notification is received.

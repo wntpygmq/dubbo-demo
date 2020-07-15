@@ -43,6 +43,7 @@ public class ProtocolFilterWrapper implements Protocol {
         this.protocol = protocol;
     }
 
+
     private static <T> Invoker<T> buildInvokerChain(final Invoker<T> invoker, String key, String group) {
         Invoker<T> last = invoker;
         //加载filter链，invoker包含一个Filter filter和一个Invoker next

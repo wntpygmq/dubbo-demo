@@ -547,7 +547,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                         // DelegateProviderMetaDataInvoker 用于持有 Invoker 和 ServiceConfig
                         DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);
                         // 导出服务，并生成 Exporter
-                        //包含了服务导出与服务注册两个过程
+                        //包含了服务导出与服务注册两个过程，看url就就知道调用的是RegistryProtocol
                         Exporter<?> exporter = protocol.export(wrapperInvoker);//protocol$adaptive
                         exporters.add(exporter);
                     }

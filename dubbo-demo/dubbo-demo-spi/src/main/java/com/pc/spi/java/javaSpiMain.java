@@ -1,6 +1,7 @@
 package com.pc.spi.java;
 
 import com.pc.spi.java.service.Mouse;
+import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
@@ -20,9 +21,17 @@ public class javaSpiMain {
 
         ServiceLoader<Mouse> services = ServiceLoader.load(Mouse.class);
 
-        for(Mouse mouse : services) {//ServiceLoader.hasNextService()进行迭代
-            mouse.use();
+        Iterator<Mouse> iterator = services.iterator();
+
+
+        while (iterator.hasNext()) {//ServiceLoader@LazyIterator.hashNext()加载MATE-INF下的配置文件
+            iterator.next();//ServiceLoader@LazyIterator.nextService()进行迭代
+
         }
+
+//        for(Mouse mouse : services) {
+//            mouse.use();
+//        }
 
     }
 

@@ -27,7 +27,7 @@
     <dubbo:registry address="zookeeper://47.98.213.18:2181" register="true"/>
 
     <!-- use dubbo protocol to export service on port 20880 -->
-    <dubbo:protocol name="dubbo" port="20884" dispatcher="execution"/>
+    <dubbo:protocol name="dubbo" port="20884" dispatcher="all"/>
 
 
 

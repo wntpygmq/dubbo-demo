@@ -43,7 +43,7 @@ final class HeartBeatTask implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void run() {//60s执行一次
         try {
             long now = System.currentTimeMillis();
             for (Channel channel : channelProvider.getChannels()) {
@@ -51,8 +51,11 @@ final class HeartBeatTask implements Runnable {
                     continue;
                 }
                 try {
+                    //因为服务端HeaderExchangeServer和客户端HeaderExchangeClient都会发送心跳
+                    //最后一次读时间
                     Long lastRead = (Long) channel.getAttribute(
                             HeaderExchangeHandler.KEY_READ_TIMESTAMP);
+                    //最后一次写时间
                     Long lastWrite = (Long) channel.getAttribute(
                             HeaderExchangeHandler.KEY_WRITE_TIMESTAMP);
                     if ((lastRead != null && now - lastRead > heartbeat)
@@ -72,11 +75,13 @@ final class HeartBeatTask implements Runnable {
                                 + ", because heartbeat read idle time out: " + heartbeatTimeout + "ms");
                         if (channel instanceof Client) {
                             try {
+                                //客户端心跳请求超时，进行重连
                                 ((Client) channel).reconnect();
                             } catch (Exception e) {
                                 //do nothing
                             }
                         } else {
+                            //服务端心跳请求超时，断开连接
                             channel.close();
                         }
                     }

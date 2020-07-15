@@ -28,6 +28,8 @@ import com.alibaba.dubbo.rpc.RpcStatus;
 
 /**
  * LimitInvokerFilter
+ *
+ * 统计活跃数
  */
 @Activate(group = Constants.CONSUMER, value = Constants.ACTIVES_KEY)
 public class ActiveLimitFilter implements Filter {

@@ -77,7 +77,7 @@ public class DubboProtocol extends AbstractProtocol {
         public Object reply(ExchangeChannel channel, Object message) throws RemotingException {
             if (message instanceof Invocation) {
                 Invocation inv = (Invocation) message;
-                // 获取 Invoker 实例
+                // 从exportMap中获取 Invoker 实例
                 Invoker<?> invoker = getInvoker(channel, inv);
                 // need to consider backward-compatibility if it's a callback
                 if (Boolean.TRUE.toString().equals(inv.getAttachments().get(IS_CALLBACK_SERVICE_INVOKE))) {
@@ -104,7 +104,7 @@ public class DubboProtocol extends AbstractProtocol {
                     }
                 }
                 RpcContext.getContext().setRemoteAddress(channel.getRemoteAddress());
-                // 通过 Invoker 调用具体的服务，AbstractProxyInvoker
+                // 通过 Invoker 调用具体的服务，先ProtocolFilterWrapper@buildInvokerChain链，然后进入AbstractProxyInvoker
                 return invoker.invoke(inv);
             }
             throw new RemotingException(channel, "Unsupported request: "
@@ -240,10 +240,13 @@ public class DubboProtocol extends AbstractProtocol {
         URL url = invoker.getUrl();
 
         // 获取服务标识，理解成服务坐标也行。由服务组名，服务名，服务版本号以及端口组成。比如：
-        // demoGroup/com.alibaba.dubbo.demo.DemoService:1.0.1:20880
+        // demoGroup/v1/com.alibaba.dubbo.demo.DemoService:1.0.1:20880
+        //消费者调用时通过这个key来查找export
         String key = serviceKey(url);
         // 创建 DubboExporter
         DubboExporter<T> exporter = new DubboExporter<T>(invoker, key, exporterMap);
+
+        //这里的export包含invoker对象，filter链
         exporterMap.put(key, exporter);
 
         //export an stub service for dispatching event
@@ -379,7 +382,7 @@ public class DubboProtocol extends AbstractProtocol {
         // 获取连接数，默认为0，表示未配置
         int connections = url.getParameter(Constants.CONNECTIONS_KEY, 0);
         // if not configured, connection is shared, otherwise, one connection for one service
-        // 如果未配置 connections，则共享连接
+        // 如果未配置 connections，则共享连接，即多个客户端共享同一个连接
         if (connections == 0) {
             service_share_connect = true;
             connections = 1;
@@ -387,7 +390,7 @@ public class DubboProtocol extends AbstractProtocol {
 
         ExchangeClient[] clients = new ExchangeClient[connections];
         for (int i = 0; i < clients.length; i++) {
-            //根据 connections 数量决定是获取共享客户端还是创建新的客户端实例
+            //根据 connections 数量决定是创建共享客户端还是创建多个客户端实例
             if (service_share_connect) {
                 // 获取共享客户端，默认
                 clients[i] = getSharedClient(url);

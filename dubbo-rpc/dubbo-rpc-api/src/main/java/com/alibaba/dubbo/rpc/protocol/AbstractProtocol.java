@@ -38,6 +38,7 @@ public abstract class AbstractProtocol implements Protocol {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    //用于保存服务提供方的invoker,最后根据key获取调用的invoker代理
     protected final Map<String, Exporter<?>> exporterMap = new ConcurrentHashMap<String, Exporter<?>>();
 
     //TODO SOFEREFENCE

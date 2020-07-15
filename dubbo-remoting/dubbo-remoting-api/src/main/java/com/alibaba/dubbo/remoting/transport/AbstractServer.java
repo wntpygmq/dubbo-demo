@@ -59,7 +59,7 @@ public abstract class AbstractServer extends AbstractEndpoint implements Server 
             bindIp = NetUtils.ANYHOST;
         }
         bindAddress = new InetSocketAddress(bindIp, bindPort);
-        // 获取最大可接受连接数
+        // 获取最大可接受tcp连接数,
         this.accepts = url.getParameter(Constants.ACCEPTS_KEY, Constants.DEFAULT_ACCEPTS);
         this.idleTimeout = url.getParameter(Constants.IDLE_TIMEOUT_KEY, Constants.DEFAULT_IDLE_TIMEOUT);
         try {
@@ -193,6 +193,7 @@ public abstract class AbstractServer extends AbstractEndpoint implements Server 
             return;
         }
 
+        //如果连接数超过了配置的connections,那么不再创建新的channel
         Collection<Channel> channels = getChannels();
         if (accepts > 0 && channels.size() > accepts) {
             logger.error("Close channel " + ch + ", cause: The server " + ch.getLocalAddress() + " connections greater than max config " + accepts);

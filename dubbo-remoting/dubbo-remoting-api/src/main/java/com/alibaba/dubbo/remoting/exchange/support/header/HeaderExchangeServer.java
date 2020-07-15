@@ -69,7 +69,8 @@ public class HeaderExchangeServer implements ExchangeServer {
         if (heartbeatTimeout < heartbeat * 2) {
             throw new IllegalStateException("heartbeatTimeout < heartbeatInterval * 2");
         }
-        startHeartbeatTimer();
+        //开启服务端心跳，dubbo2.6心跳是双向的，客户端对应的是HeaderExchangeClient
+        startHeartbeatTimer();//接收请求是HeartbeatHandler
     }
 
     public Server getServer() {

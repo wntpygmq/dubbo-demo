@@ -18,12 +18,10 @@ package com.alibaba.dubbo.demo.demo.consumer;
 
 import com.alibaba.dubbo.demo.AsyncService;
 import com.alibaba.dubbo.demo.DemoService;
+import com.alibaba.dubbo.remoting.exchange.support.DefaultFuture;
 import com.alibaba.dubbo.rpc.RpcContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class Consumer {
 
@@ -72,6 +70,8 @@ public class Consumer {
                 RpcContext.getContext().setAttachment("secret2","secret2");
 
                 String hello = demoService.sayHello("world"+num++); // call remote method
+                System.out.println(hello);
+
 
 
                 //测试RpcContext隔离
@@ -98,21 +98,47 @@ public class Consumer {
 
                 //异步调用
 //                final AsyncService asyncService = (AsyncService) context.getBean("asyncService");
-//                String nullResult = asyncService.sayHello("world");//返回null
-//                System.out.println(nullResult);
 //
+//                for(int i=0;i<2;i++) {
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            String nullResult = asyncService.sayHello("future"+Thread.currentThread().getName());//返回null
+//                            System.out.println(nullResult);
+//
+//                            try {
+//                                //每个线程可以拿到自己的Future
+//                                System.out.println("拿到future结果："+RpcContext.getContext().getFuture().get());
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    },i+"").start();
+//                }
+
+
+
+
+
+
+
 //                Future<String> result = RpcContext.getContext().asyncCall(new Callable<String>() {
 //                    @Override
 //                    public String call() throws Exception {
 //                        return asyncService.sayHello("async call request");
 //                    }
 //                });
-//
+
 //                System.out.println("async result "+result.get());
 
 
 
-                Thread.sleep(10000);
+
+
+
+
+                Thread.sleep(120*1000);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }

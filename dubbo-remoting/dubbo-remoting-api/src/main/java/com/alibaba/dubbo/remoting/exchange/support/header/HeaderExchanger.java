@@ -38,10 +38,10 @@ public class HeaderExchanger implements Exchanger {
     @Override
     public ExchangeClient connect(URL url, ExchangeHandler handler) throws RemotingException {
         // 这里包含了多个调用，分别如下：
-        // 1. 创建 HeaderExchangeHandler 对象，启动心跳检测机制
+        // 1. 创建 HeaderExchangeClient 对象
         // 2. 创建 DecodeHandler 对象
         // 3. 通过 Transporters 构建 Client 实例
-        // 4. 创建 HeaderExchangeClient 对象
+        // 4. 创建 HeaderExchangeClient 对象,启动客户端心跳检发送
         return new HeaderExchangeClient(Transporters.connect(url, new DecodeHandler(new HeaderExchangeHandler(handler))), true);
     }
 
@@ -52,6 +52,7 @@ public class HeaderExchanger implements Exchanger {
         //   1. new HeaderExchangeHandler(handler)
         //	 2. new DecodeHandler(new HeaderExchangeHandler(handler))
         //   3. Transporters.bind(url, new DecodeHandler(new HeaderExchangeHandler(handler)))
+        //   4.HeaderExchangeServer 开启服务端心跳发送
         return new HeaderExchangeServer(Transporters.bind(url, new DecodeHandler(new HeaderExchangeHandler(handler))));
     }
 

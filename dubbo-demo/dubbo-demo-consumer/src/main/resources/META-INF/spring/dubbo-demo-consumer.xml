@@ -34,7 +34,8 @@
 
 
 
-    <dubbo:reference id="demoService" check="true" interface="com.alibaba.dubbo.demo.DemoService" retries="-1" cluster="failback" group="v1">
+    <dubbo:reference id="demoService" check="true" interface="com.alibaba.dubbo.demo.DemoService"
+                     retries="-1" cluster="failback" group="v1">
         <!--<dubbo:method name="sayHello" cache="lru"/>--><!--开启缓存-->
         <!--<dubbo:method name="groupList" merger="true"/>&lt;!&ndash;聚合多个接口实现类的结果&ndash;&gt;-->
     </dubbo:reference>

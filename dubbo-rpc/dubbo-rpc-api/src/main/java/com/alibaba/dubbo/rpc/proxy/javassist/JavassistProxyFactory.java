@@ -29,6 +29,31 @@ import com.alibaba.dubbo.rpc.proxy.InvokerInvocationHandler;
  */
 public class JavassistProxyFactory extends AbstractProxyFactory {
 
+    /**
+     * package org.apache.dubbo.common.bytecode;
+     *
+     * public class proxy0 implements org.apache.dubbo.demo.DemoService {
+     *
+     *     public static java.lang.reflect.Method[] methods;
+     *
+     *     private java.lang.reflect.InvocationHandler handler;
+     *
+     *     public proxy0() {
+     *     }
+     *
+     *     public proxy0(java.lang.reflect.InvocationHandler arg0) {
+     *         handler = $1;
+     *     }
+     *
+     *     public java.lang.String sayHello(java.lang.String arg0) {
+     *         Object[] args = new Object[1];
+     *         args[0] = ($w) $1;
+     *         Object ret = handler.invoke(this, methods[0], args);
+     *         return (java.lang.String) ret;
+     *     }
+     *  }
+     *
+     */
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getProxy(Invoker<T> invoker, Class<?>[] interfaces) {
@@ -37,6 +62,36 @@ public class JavassistProxyFactory extends AbstractProxyFactory {
     }
 
     /**
+     *
+     *
+     * public Object invokeMethod(Object object, String string, Class[] arrclass, Object[] arrobject) throws InvocationTargetException {
+     *      DemoService demoService;
+     *      try {
+     *          // 类型转换
+     *          demoService = (DemoService)object;
+     *      } catch (Throwable throwable) {
+     *          throw new IllegalArgumentException(throwable);
+     *      }
+     *      try {
+     *          // 根据方法名调用指定的方法
+     *          if ("sayHello".equals(string) && arrclass.length == 1) {
+     *              return demoService.sayHello((String)arrobject[0]);
+     *          }
+     *          if( "sayGood".equals( $2 )  &&  $3.length == 0 ) {
+     *              return ($w)w.sayGood();
+     *          }
+     *          if( "groupList".equals( $2 )  &&  $3.length == 0 ) {
+     *              return ($w)w.groupList();
+     *          }
+     *
+     *      } catch (Throwable throwable) {
+     *          throw new InvocationTargetException(throwable);
+     *      }
+     *      throw new NoSuchMethodException(new StringBuffer().append("Not found method \"").append(string).append("\" in class com.alibaba.dubbo.demo.DemoService.").toString());
+     * }
+     *
+     *
+     * 使用动态代理是性能考虑，请求过来，直接根据方法名，参数调用代理类，代理类调用正在的实现类，省去了每次调用都需要反射。
      *
      * @param proxy impl对象
      * @param type 接口类型

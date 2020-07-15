@@ -118,7 +118,7 @@ public class FailbackClusterInvoker<T> extends AbstractClusterInvoker<T> {
             checkInvokers(invokers, invocation);
             //选择invoker
             Invoker<T> invoker = select(loadbalance, invocation, invokers, null);
-            //这里的invoker是dubboInvoker,先看AbstractInvoker
+            //这里的invoker是dubboInvoker,先看InvokerWrapper执行filter链,AbstractInvoker
             return invoker.invoke(invocation);
         } catch (Throwable e) {
             // 如果调用过程中发生异常，此时仅打印错误日志，不抛出异常
