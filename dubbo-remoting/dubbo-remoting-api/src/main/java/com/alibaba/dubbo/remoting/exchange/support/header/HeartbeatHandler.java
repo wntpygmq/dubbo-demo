@@ -68,7 +68,6 @@ public class HeartbeatHandler extends AbstractChannelHandlerDelegate {
                 Response res = new Response(req.getId(), req.getVersion());
                 res.setEvent(Response.HEARTBEAT_EVENT);
                 channel.send(res);
-                System.out.println("received heart: "+res.toString());
                 if (logger.isInfoEnabled()) {
                     int heartbeat = channel.getUrl().getParameter(Constants.HEARTBEAT_KEY, 0);
                     if (logger.isDebugEnabled()) {
