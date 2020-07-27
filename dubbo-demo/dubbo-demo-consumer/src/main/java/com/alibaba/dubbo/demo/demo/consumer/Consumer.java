@@ -16,12 +16,13 @@
  */
 package com.alibaba.dubbo.demo.demo.consumer;
 
-import com.alibaba.dubbo.demo.AsyncService;
 import com.alibaba.dubbo.demo.DemoService;
-import com.alibaba.dubbo.remoting.exchange.support.DefaultFuture;
+import com.alibaba.dubbo.demo.TargetService;
+import com.alibaba.dubbo.demo.model.ARequest;
 import com.alibaba.dubbo.rpc.RpcContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Consumer {
 
@@ -40,6 +41,10 @@ public class Consumer {
 //        Object result = barService.$invoke("sayHello", new String[] { "java.lang.String" }, new Object[] { "World" });
 
 
+
+//
+        final TargetService targetService = (TargetService) context.getBean("targetService");
+        System.out.println(targetService.sayHello(new ARequest()));
 
 
         //demoService是proxy0对象

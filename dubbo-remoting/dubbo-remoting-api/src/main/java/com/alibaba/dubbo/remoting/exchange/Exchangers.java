@@ -113,7 +113,7 @@ public class Exchangers {
     }
 
     public static Exchanger getExchanger(URL url) {
-        //getExchanger 会通过 SPI 加载 HeaderExchangeClient 实例
+        //getExchanger 会通过 SPI 加载 HeaderExchange 实例
         String type = url.getParameter(Constants.EXCHANGER_KEY, Constants.DEFAULT_EXCHANGER);
         return getExchanger(type);
     }

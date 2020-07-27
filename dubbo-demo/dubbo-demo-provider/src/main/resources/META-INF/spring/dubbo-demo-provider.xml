@@ -46,4 +46,16 @@
     <dubbo:service interface="com.alibaba.dubbo.demo.AsyncService" ref="asyncService" executes="10" />
 
 
+
+   <dubbo:service interface="com.alibaba.dubbo.demo.TargetService" ref="targetService" />
+
+
+    <bean id="targetService" class="com.alibaba.dubbo.demo.provider.ExecutorFactoryBean">
+        <property name="clazz" value="com.alibaba.dubbo.demo.TargetService"/>
+        <property name="baseClazz" value="com.alibaba.dubbo.demo.model.Request"/>
+    </bean>
+
+
+
+
 </beans>

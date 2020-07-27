@@ -46,4 +46,6 @@
         <dubbo:method name="sayHello" async="true" />
     </dubbo:reference>
 
+    <dubbo:reference id="targetService" interface="com.alibaba.dubbo.demo.TargetService"/>
+
 </beans>
